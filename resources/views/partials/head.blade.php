@@ -5,9 +5,30 @@
     {{ filled($title ?? null) ? $title.' - '.config('app.name', 'Laravel') : config('app.name', 'Laravel') }}
 </title>
 
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+{{-- Favicon y PWA --}}
+<link rel="manifest" href="{{ url('/manifest.json') }}">
+@php
+    $assetFavicons = config('app.manifest_asset_favicons');
+    $favicon = asset('favicons/favicon-128x128.png');
+    if (! empty($assetFavicons)) {
+        if (File::exists('favicons/'.$assetFavicons.'/favicon-128x128.png')) {
+            $favicon = asset('favicons/'.$assetFavicons.'/favicon-128x128.png');
+        }
+    }
+@endphp
+<link rel="apple-touch-icon" href="{{ $favicon}}">
+<link rel="icon" href="{{ $favicon }}" sizes="any">
+<link rel="icon" href="{{ $favicon }}" type="image/svg+xml">
+
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register("{{ url('service-worker.js') }}")
+                .then(reg => console.log('✅ Service Worker registrado en:', reg.scope))
+                .catch(err => console.error('⚠️ Error al registrar el Service Worker:', err));
+        });
+    }
+</script>
 
 @fonts
 

@@ -128,4 +128,10 @@ return [
     'root_password' => env('ROOT_PASSWORD', '12345678'),
     'widget_filament' => env('WIDGET_FILAMENT', false),
 
+    'manifest_background_color' => env('MANIFEST_BACKGROUND_COLOR', '#FFFFFF'),
+    'manifest_theme_color' => env('MANIFEST_THEME_COLOR', '#0056b3'),
+    'manifest_asset_favicons' => env('MANIFEST_ASSET_FAVICONS', ''),
+    'manifest_description' => env('MANIFEST_DESCRIPTION', 'description'),
+    'manifest_name' => env('MANIFEST_NAME', 'Laravel'),
+    'manifest_short_name' => env('MANIFEST_SHORT_NAME', 'Laravel'),
 ];
