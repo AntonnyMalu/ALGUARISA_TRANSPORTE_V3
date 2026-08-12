@@ -196,9 +196,12 @@
         @if (Route::has('login'))
             <div class="h-14.5 hidden lg:block"></div>
         @endif
-    @push('service-worker')
-        <x-service-worker/>
-    @endpush
-    @stack('service-worker')
+
+        @include('sweetalert2::index')
+
+        @push('service-worker')
+            <x-service-worker/>
+        @endpush
+        @stack('service-worker')
     </body>
 </html>
