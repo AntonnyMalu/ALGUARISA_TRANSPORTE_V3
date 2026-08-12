@@ -1,0 +1,79 @@
+<?php
+
+namespace App\Filament\Resources\Users\Tables;
+
+use App\Models\User;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ForceDeleteBulkAction;
+use Filament\Actions\RestoreAction;
+use Filament\Actions\RestoreBulkAction;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\TrashedFilter;
+use Filament\Tables\Table;
+use Illuminate\Support\Str;
+
+class UsersTable
+{
+    public static function configure(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('is_mobile')
+                    ->label(__('Name'))
+                    ->default(fn(User $record): string => $record->name)
+                    ->description(fn(User $record): string => $record->email)
+                    ->formatStateUsing(fn(string $state): string => Str::ucwords($state))
+                    ->icon(Heroicon::OutlinedCheckCircle)
+                    ->iconColor('success')
+                    ->limit(20)
+                    ->hiddenFrom('md'),
+                TextColumn::make('name')
+                    ->label(__('Name'))
+                    ->formatStateUsing(fn(string $state): string => Str::ucwords($state))
+                    ->limit(20)
+                    ->searchable()
+                    ->visibleFrom('md'),
+                TextColumn::make('email')
+                    ->label(__('Email address'))
+                    ->searchable()
+                    ->visibleFrom('md'),
+                TextColumn::make('phone')
+                    ->label('Teléfono')
+                    ->default('-')
+                    ->alignCenter()
+                    ->visibleFrom('md')
+                    ->searchable(),
+                IconColumn::make('email_verified_at')
+                    ->label('Verificado')
+                    ->boolean()
+                    ->alignCenter()
+                    ->visibleFrom('md'),
+                ToggleColumn::make('is_active')
+                    ->alignCenter(),
+            ])
+            ->filters([
+                TrashedFilter::make(),
+            ])
+            ->recordActions([
+                ActionGroup::make([
+                    EditAction::make(),
+                    DeleteAction::make(),
+                    RestoreAction::make(),
+                ]),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                    ForceDeleteBulkAction::make(),
+                    RestoreBulkAction::make(),
+                ]),
+            ]);
+    }
+}

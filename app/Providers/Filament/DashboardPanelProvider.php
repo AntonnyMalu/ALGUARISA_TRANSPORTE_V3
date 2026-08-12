@@ -62,6 +62,7 @@ class DashboardPanelProvider extends PanelProvider
                 'profile' => fn (Action $action) => $action->label(auth()->user()->nameCapitalize())
                     ->url(route('profile.edit')),
             ])
-            ->favicon(asset('favicons/icon-512x512.png'));
+            ->favicon(asset('favicons/icon-512x512.png'))
+            ->sidebarCollapsibleOnDesktop();
     }
 }
