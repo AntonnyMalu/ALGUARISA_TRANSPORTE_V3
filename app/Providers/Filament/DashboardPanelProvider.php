@@ -57,9 +57,9 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->profile(isSimple: false)
             ->userMenuItems([
-                'profile' => fn (Action $action) =>
-                $action->label(auth()->user()->nameCapitalize())
-                ->url(route('profile.edit')),
-            ]);
+                'profile' => fn (Action $action) => $action->label(auth()->user()->nameCapitalize())
+                    ->url(route('profile.edit')),
+            ])
+            ->favicon(asset('favicons/icon-512x512.png'));
     }
 }
