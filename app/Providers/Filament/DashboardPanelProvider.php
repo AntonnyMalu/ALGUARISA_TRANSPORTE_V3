@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -53,6 +54,12 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->profile(isSimple: false)
+            ->userMenuItems([
+                'profile' => fn (Action $action) =>
+                $action->label(auth()->user()->nameCapitalize())
+                ->url(route('profile.edit')),
             ]);
     }
 }

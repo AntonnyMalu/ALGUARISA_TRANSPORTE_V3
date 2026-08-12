@@ -29,8 +29,8 @@
             </div>
         </form>
 
-        @if ($this->showDeleteUser)
+        {{--@if ($this->showDeleteUser)
             <livewire:settings.delete-user-form />
-        @endif
+        @endif--}}
     </x-settings.layout>
 </section>
