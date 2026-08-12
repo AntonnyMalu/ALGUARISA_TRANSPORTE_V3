@@ -134,4 +134,6 @@ return [
     'manifest_description' => env('MANIFEST_DESCRIPTION', 'description'),
     'manifest_name' => env('MANIFEST_NAME', 'Laravel'),
     'manifest_short_name' => env('MANIFEST_SHORT_NAME', 'Laravel'),
+
+    'register' => env('REGISTER', true),
 ];
