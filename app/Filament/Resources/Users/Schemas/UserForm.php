@@ -46,6 +46,7 @@ class UserForm
                 Fieldset::make('Permisos')
                     ->schema([
                         Toggle::make('is_active')
+                            ->default(true)
                             ->required(),
                     ])
                 ->columnSpanFull(),
