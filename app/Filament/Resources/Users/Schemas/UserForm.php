@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
+use Filament\Actions\CreateAction;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Schema;
 
 class UserForm
@@ -14,27 +16,39 @@ class UserForm
     {
         return $schema
             ->components([
-                TextInput::make('name')
-                    ->required(),
-                TextInput::make('email')
-                    ->label('Email address')
-                    ->email()
-                    ->required(),
-                TextInput::make('phone')
-                    ->tel(),
-                DateTimePicker::make('email_verified_at'),
-                TextInput::make('password')
-                    ->password()
-                    ->required(),
-                Textarea::make('two_factor_secret')
+                Fieldset::make('Datos Básicos')
+                    ->schema([
+                        TextInput::make('name')
+                            ->label(__('Name'))
+                            ->minLength(3)
+                            ->maxLength(50)
+                            ->required(),
+                        TextInput::make('email')
+                            ->label(__('Email address'))
+                            ->email()
+                            ->maxLength(100)
+                            ->required(),
+                        TextInput::make('phone')
+                            ->label('Teléfono')
+                            ->tel()
+                            ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/')
+                            ->required(),
+                        TextInput::make('password')
+                            ->label(__('Password'))
+                            ->password()
+                            ->minLength(8)
+                            ->maxLength(100)
+                            ->required()
+                            ->hiddenOn(['edit']),
+                    ])
                     ->columnSpanFull(),
-                Textarea::make('two_factor_recovery_codes')
-                    ->columnSpanFull(),
-                DateTimePicker::make('two_factor_confirmed_at'),
-                Toggle::make('is_root')
-                    ->required(),
-                Toggle::make('is_active')
-                    ->required(),
+
+                Fieldset::make('Permisos')
+                    ->schema([
+                        Toggle::make('is_active')
+                            ->required(),
+                    ])
+                ->columnSpanFull(),
             ]);
     }
 }

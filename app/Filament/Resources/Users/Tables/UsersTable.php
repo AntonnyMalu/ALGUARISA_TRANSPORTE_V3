@@ -27,16 +27,16 @@ class UsersTable
             ->columns([
                 TextColumn::make('is_mobile')
                     ->label(__('Name'))
-                    ->default(fn(User $record): string => $record->name)
-                    ->description(fn(User $record): string => $record->email)
-                    ->formatStateUsing(fn(string $state): string => Str::ucwords($state))
+                    ->default(fn (User $record): string => $record->name)
+                    ->description(fn (User $record): string => $record->email)
+                    ->formatStateUsing(fn (string $state): string => Str::ucwords($state))
                     ->icon(Heroicon::OutlinedCheckCircle)
                     ->iconColor('success')
                     ->limit(20)
                     ->hiddenFrom('md'),
                 TextColumn::make('name')
                     ->label(__('Name'))
-                    ->formatStateUsing(fn(string $state): string => Str::ucwords($state))
+                    ->formatStateUsing(fn (string $state): string => Str::ucwords($state))
                     ->limit(20)
                     ->searchable()
                     ->visibleFrom('md'),

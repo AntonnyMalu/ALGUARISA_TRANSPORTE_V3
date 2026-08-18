@@ -23,13 +23,13 @@ class UserResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserCircle;
 
-    protected static string | UnitEnum | null $navigationGroup = "Configuración";
+    protected static string|UnitEnum|null $navigationGroup = 'Configuración';
 
-    protected static ?string $modelLabel = "Usuario";
+    protected static ?string $modelLabel = 'Usuario';
 
     protected static ?string $slug = 'usuarios';
 
-    //protected static ?string $recordTitleAttribute = 'name';
+    // protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
     {
@@ -52,8 +52,8 @@ class UserResource extends Resource
     {
         return [
             'index' => ListUsers::route('/'),
-            'create' => CreateUser::route('/create'),
-            'edit' => EditUser::route('/{record}/edit'),
+            // 'create' => CreateUser::route('/create'),
+            // 'edit' => EditUser::route('/{record}/edit'),
         ];
     }
 
