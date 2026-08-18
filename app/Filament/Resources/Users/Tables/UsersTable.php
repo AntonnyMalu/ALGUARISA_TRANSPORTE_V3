@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Users\Tables;
 
 use App\Models\User;
+use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -11,12 +12,16 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
+use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class UsersTable
@@ -63,6 +68,8 @@ class UsersTable
             ])
             ->recordActions([
                 ActionGroup::make([
+                    self::actionValidarEmail(),
+                    self::actionResertPassword(),
                     EditAction::make(),
                     DeleteAction::make(),
                     RestoreAction::make(),
@@ -74,6 +81,55 @@ class UsersTable
                     ForceDeleteBulkAction::make(),
                     RestoreBulkAction::make(),
                 ]),
+                Action::make('actualizar')
+                    ->icon(Heroicon::OutlinedArrowPath)
+                    ->iconButton(),
             ]);
+    }
+
+    protected static function actionValidarEmail()
+    {
+        return Action::make('is_verified')
+            ->label('Verificar Email')
+            ->color('info')
+            ->icon(Heroicon::OutlinedCheckCircle)
+            ->requiresConfirmation()
+            ->visible(fn (User $record): bool => is_null($record->email_verified_at))
+            ->action(function (User $record): void {
+                $record->update([
+                    'email_verified_at' => now(),
+                ]);
+                Notification::make()
+                    ->title('prueba')
+                    ->success()
+                    ->send();
+            });
+    }
+
+    protected static function actionResertPassword()
+    {
+        return Action::make('reset_password')
+            ->label(__('Reset Password'))
+            ->color('info')
+            ->icon(Heroicon::OutlinedKey)
+            ->schema([
+                TextInput::make('password')
+                    ->label(__('Password'))
+                    ->password()
+                    ->revealable()
+                    ->minLength(8)
+                    ->required(),
+            ])
+            ->modalWidth(width: Width::Small)
+            ->hidden(fn (User $record): bool => $record->is_root)
+            ->action(function (array $data, User $record): void {
+                $record->update([
+                    'password' => Hash::make($data['password']),
+                ]);
+                Notification::make()
+                    ->title('Contraseña cambiada')
+                    ->success()
+                    ->send();
+            });
     }
 }

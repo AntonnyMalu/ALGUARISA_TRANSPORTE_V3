@@ -39,7 +39,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  */
 #[Table(key: 'id', keyType: 'string', incrementing: false)]
 
-#[Fillable(['name', 'email', 'phone', 'password', 'is_active'])]
+#[Fillable(['name', 'email', 'phone', 'password', 'is_active', 'email_verified_at'])]
 
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token', 'is_root'])]
 
